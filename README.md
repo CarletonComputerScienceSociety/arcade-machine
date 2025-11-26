@@ -1,1 +1,1 @@
-# arcade-machine-docs
+# arcade-machine
