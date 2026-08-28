@@ -2,6 +2,10 @@
 
 The arcade machine runs [Batocera](https://batocera.org/), a Linux distribution built around their fork of [EmulationStation](https://github.com/batocera-linux/batocera-emulationstation).
 
+## Hardware issues
+
+The two backpanel USB 2 ports are faulty. The primary symptom of this is that when the computer is booted, there is a high chance that the ports will be non-functional. This state may then persist for anywhere from zero to several subsequent reboots.
+
 ## Controls
 
 EmulationStation keyboard bindings use these keycodes: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
