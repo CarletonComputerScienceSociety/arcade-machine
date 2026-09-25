@@ -38,7 +38,7 @@ useradd --create-home --shell /usr/bin/fish arcade
 
 curl -O https://buildbot.libretro.com/nightly/linux/x86_64/RetroArch.7z
 
-dnf5 install p7zip
+dnf5 install -y p7zip
 7z x RetroArch.7z -o/opt/RetroArch
 dnf5 remove p7zip
 
