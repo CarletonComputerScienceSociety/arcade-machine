@@ -18,9 +18,29 @@ dnf5 install -y fish greetd helix niri
 
 ### Prune services
 
-systemctl disable ModemManager.service avahi-daemon.service avahi-daemon.socket
+# fedora-bootc does not come with ModemManager?
+# systemctl disable ModemManager.service avahi-daemon.service avahi-daemon.socket
+systemctl disable avahi-daemon.service avahi-daemon.socket
 
 ### Configure greeter
 
 systemctl disable gdm.service
 systemctl enable greetd.service
+
+useradd --home-dir / --no-create-home --system --shell /bin/nologin greeter
+
+### Create the arcade user
+
+useradd --create-home --shell /usr/bin/fish arcade
+
+### Install RetroArch
+
+curl -O https://buildbot.libretro.com/nightly/linux/x86_64/RetroArch.7z
+
+dnf5 install p7zip
+7z x RetroArch.7z -o/opt/RetroArch
+dnf5 remove p7zip
+
+mv /opt/RetroArch/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage /opt/RetroArch/RetroArch.AppImage
+mv /opt/RetroArch/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage.home /opt/RetroArch/RetroArch.AppImage.home
+rm -d /opt/RetroArch/RetroArch-Linux-x86_64
