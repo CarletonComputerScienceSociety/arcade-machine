@@ -1,6 +1,6 @@
 # arcade-machine
 
-The arcade machine runs [Batocera](https://batocera.org/), a Linux distribution built around their fork of [EmulationStation](https://github.com/batocera-linux/batocera-emulationstation).
+The arcade machine runs a custom [bootc](https://github.com/bootc-dev/bootc) image based on Fedora. This image is built based on the [image template](https://github.com/ublue-os/image-template) provided by the Universal Blue Project.
 
 ## Hardware issues
 
@@ -8,23 +8,13 @@ The two backpanel USB 2 ports are faulty. The primary symptom of this is that wh
 
 ## Controls
 
-EmulationStation keyboard bindings use these keycodes: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
+The four buttons adjacent to the joysticks are mapped to the Xbox YXAB buttons as follows:
 
-Controller buttons displayed in UI legend are purely directional. But in config and elsewhere in the UI they label them according to the Xbox layout:
-
-| Direction/UI | Config |
-|--------------|--------|
-| Up           | `y`    |
-| Down         | `a`    |
-| Left         | `x`    |
-| Right        | `b`    |
+| Direction | Xbox |
+|-----------|------|
+| Up        | `y`  |
+| Down      | `a`  |
+| Left      | `x`  |
+| Right     | `b`  |
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/6/67/Microsoft-Xbox-One-controller.jpg?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original" width="200" />
-
-Current keyboard bindings:
-| Key        | Action          |
-|------------|-----------------|
-| Enter      | `select`        |
-| Spacebar   | `start`         |
-| WASD       | `y` `x` `a` `b` |
-| Arrow Keys | Joystick        |
