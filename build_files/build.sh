@@ -18,13 +18,14 @@ dnf5 install -y fish greetd helix niri
 
 ### Prune services
 
-# fedora-bootc does not come with ModemManager?
+# fedora-bootc base image does not come with ModemManager?
 # systemctl disable ModemManager.service avahi-daemon.service avahi-daemon.socket
 systemctl disable avahi-daemon.service avahi-daemon.socket
 
 ### Configure greeter
 
-systemctl disable gdm.service
+# enable if switching to fedora-silverblue base image
+# systemctl disable gdm.service
 systemctl enable greetd.service
 
 useradd --home-dir / --no-create-home --system --shell /bin/nologin greeter
