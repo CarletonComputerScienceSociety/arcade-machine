@@ -7,7 +7,7 @@ cp -avf "/ctx/system_files"/. /
 
 ### Install packages
 
-dnf5 install -y fish greetd helix niri
+dnf5 install -y alacritty fish greetd helix niri
 
 # Use a COPR Example:
 #
