@@ -43,5 +43,10 @@ dnf5 install -y p7zip
 dnf5 remove p7zip
 
 mv /opt/RetroArch/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage /opt/RetroArch/RetroArch.AppImage
-mv /opt/RetroArch/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage.home /opt/RetroArch/RetroArch.AppImage.home
+mv /opt/RetroArch/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage.home /var/arcade/RetroArch/RetroArch.AppImage.home
 rm -d /opt/RetroArch/RetroArch-Linux-x86_64
+
+ln -s /var/arcade/RetroArch/RetroArch.AppImage.home /opt/RetroArch/RetroArch.AppImage.home
+# TODO: any files we want to be immutable and update with the image should go under /opt and be symlinked in
+# TODO: generate two variants of RetroArch config file under /opt, with and without kiosk mode, and link in so it can be toggled by ujust
+#       alternatively, produce a template of the config that can be rendered to the live config under /var
