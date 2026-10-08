@@ -5,6 +5,10 @@ set -ouex pipefail
 # Copy the contents of system_files/ of the git repo to /
 cp -avf "/ctx/system_files"/. /
 
+# Fix permissions on /root/.ssh
+chmod 700 /root/.ssh
+chmod 600 /root/.ssh/authorized_keys
+
 ### Install packages
 
 dnf5 install -y alacritty fish greetd helix niri
