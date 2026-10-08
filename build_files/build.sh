@@ -5,6 +5,10 @@ set -ouex pipefail
 # Copy the contents of system_files/ of the git repo to /
 cp -avf "/ctx/system_files"/. /
 
+# Fix permissions on SSH authorized keys files
+chmod 755 /etc/ssh/authorized_keys
+chmod 644 /etc/ssh/authorized_keys/root
+
 ### Install packages
 
 dnf5 install -y alacritty fish greetd helix niri
@@ -21,6 +25,10 @@ dnf5 install -y alacritty fish greetd helix niri
 # fedora-bootc base image does not come with ModemManager?
 # systemctl disable ModemManager.service avahi-daemon.service avahi-daemon.socket
 systemctl disable avahi-daemon.service avahi-daemon.socket
+
+### Enable SSH
+
+systemctl enable sshd.service
 
 ### Configure greeter
 
