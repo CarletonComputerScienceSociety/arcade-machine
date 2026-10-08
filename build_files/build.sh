@@ -42,6 +42,7 @@ dnf5 install -y p7zip
 7z x RetroArch.7z -o/opt/RetroArch
 dnf5 remove p7zip
 
+mkdir -p /var/arcade/RetroArch
 mv /opt/RetroArch/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage /opt/RetroArch/RetroArch.AppImage
 mv /opt/RetroArch/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage.home /var/arcade/RetroArch/RetroArch.AppImage.home
 rm -d /opt/RetroArch/RetroArch-Linux-x86_64
