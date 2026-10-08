@@ -26,6 +26,10 @@ dnf5 install -y alacritty fish greetd helix niri
 # systemctl disable ModemManager.service avahi-daemon.service avahi-daemon.socket
 systemctl disable avahi-daemon.service avahi-daemon.socket
 
+### Enable SSH
+
+systemctl enable sshd.service
+
 ### Configure greeter
 
 # enable if switching to fedora-silverblue base image
