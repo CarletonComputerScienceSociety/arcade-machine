@@ -101,14 +101,6 @@ jobs:
       - name: Change ownership of output directory
         shell: bash
         run: sudo chown -R $(whoami):$(whoami) output
-  
-      - name: Build disk images
-        id: build
-        uses: osbuild/image-builder-action@v1
-        with:
-          builder-image: 
-          #config-file: ${{ matrix.disk-type == 'anaconda-iso' && './disk_config/iso.toml' || './disk_config/disk.toml' }}
-          #additional-args: --use-librepo=True
 
       - name: Upload disk images and Checksum to Job Artifacts
         if: github.event_name != 'pull_request'
