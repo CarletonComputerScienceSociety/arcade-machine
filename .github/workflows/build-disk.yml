@@ -65,6 +65,13 @@ jobs:
           sudo apt install -y \
             podman
 
+      # Fix overlay driver mismatch on ubuntu-24.04 (unknown on ubuntu-26.04)
+      - name: Fix container storage config
+        run: |
+          sudo rm -rf /var/lib/containers/storage
+          sudo mkdir -p /etc/containers
+          echo -e "[storage]\ndriver = \"overlay\"\nrunroot = \"/run/containers/storage\"\ngraphroot = \"/var/lib/containers/storage\"" | sudo tee /etc/containers/storage.conf
+
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
