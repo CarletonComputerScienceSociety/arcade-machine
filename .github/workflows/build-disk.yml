@@ -22,8 +22,8 @@ env:
   IMAGE_NAME: ${{ github.event.repository.name }} # output of build.yml, keep in sync
   IMAGE_REGISTRY: "ghcr.io/${{ github.repository_owner }}"  # do not edit
   DEFAULT_TAG: "latest"
-  BOOTC_INSTALLER_PAYLOAD_REF: "quay.io/centos-bootc/bootc-image-builder:latest"
-  BOOTC_REF: "ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:latest"
+  BOOTC_INSTALLER_PAYLOAD_REF: "ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:latest"
+  BOOTC_REF: "localhost/iso"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
@@ -36,7 +36,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        disk-type: ["qcow2", "image-installer"]
+        disk-type: ["qcow2", "generic-iso"]
     permissions:
       contents: read
       packages: read
@@ -51,7 +51,7 @@ jobs:
           DISK_TYPE=$(echo "${{ matrix.disk-type }}" | tr ' ' '-')
           # Lowercase the image uri
           echo "IMAGE_REGISTRY=${IMAGE_REGISTRY,,}" >> ${GITHUB_ENV}
-          echo "BOOTC_REF=${BOOTC_REF,,}" >> ${GITHUB_ENV}
+          echo "BOOTC_INSTALLER_PAYLOAD_REF=${BOOTC_INSTALLER_PAYLOAD_REF,,}" >> ${GITHUB_ENV}
           echo "IMAGE_NAME=${IMAGE_NAME,,}" >> ${GITHUB_ENV}
           echo "DISK_TYPE=${DISK_TYPE}" >> ${GITHUB_ENV}
           echo "USER_UID=${USER_UID}" >> ${GITHUB_ENV}
@@ -76,17 +76,23 @@ jobs:
         run: |
           sudo podman pull "$BOOTC_REF"
           sudo podman pull "$BOOTC_INSTALLER_PAYLOAD_REF"
+
+      - name: Build ISO installer container image
+        shell: bash
+        run: podman build -t localhost/iso -f Containerfile
+
       - name: Run image-builder container
         shell: bash
         run: |
           sudo podman run --privileged --rm \
-            -v "${{ github.workspace }}/output:/output" \
+            -v ./output:/output \
             -v /var/lib/containers/storage:/var/lib/containers/storage \
             "ghcr.io/osbuild/image-builder:latest" \
-            --bootc-ref "$BOOTC_REF" \
-            --bootc-installer-payload-ref "${{ env.BOOTC_INSTALLER_PAYLOAD_REF }}" \
+            --bootc-ref "${{ matrix.disk-type == 'generic-iso' && env.BOOTC_REF || env.BOOTC_INSTALLER_PAYLOAD_REF }}" \
+            --bootc-installer-payload-ref "${{ matrix.disk-type == 'generic-iso' && env.BOOTC_INSTALLER_PAYLOAD_REF }}" \
             --bootc-default-fs "btrfs" \
             build "${{ matrix.disk-type }}"
+
       - name: Change ownership of output directory
         shell: bash
         run: sudo chown -R $(whoami):$(whoami) output
