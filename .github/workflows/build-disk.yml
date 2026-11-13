@@ -3,14 +3,6 @@ name: Build disk images
 
 on:
   workflow_dispatch:
-    inputs:
-      platform:
-        required: true
-        type: choice
-        options:
-          - amd64
-          - arm64
-        default: amd64
   pull_request:
     branches:
       - main
@@ -29,12 +21,17 @@ concurrency:
 jobs:
   build:
     name: Build disk images
-    # pinned to 24.04 until https://github.com/osbuild/osbuild/issues/2579 is fixed
-    runs-on: ${{ inputs.platform == 'amd64' && 'ubuntu-24.04' || 'ubuntu-24.04-arm' }}
     strategy:
       fail-fast: false
       matrix:
+        # pinned to 24.04 until https://github.com/osbuild/osbuild/issues/2579 is fixed
+        include:
+          - arch: amd64
+            runner: ubuntu-24.04
+          - arch: arm64
+            runner: ubuntu-24.04-arm
         disk-type: ["qcow2", "generic-iso"]
+    runs-on: ${{ matrix.runner }}
     permissions:
       contents: read
       packages: read
@@ -56,7 +53,7 @@ jobs:
           echo "USER_GID=${USER_GID}" >> ${GITHUB_ENV}
 
       - name: Install dependencies
-        if: inputs.platform == 'arm64'
+        if: matrix.arch == 'arm64'
         run: |
           set -x
           sudo apt update -y
