@@ -74,7 +74,6 @@ jobs:
       - name: Pull bootc images
         shell: bash
         run: |
-          sudo podman pull "$BOOTC_REF"
           sudo podman pull "$BOOTC_INSTALLER_PAYLOAD_REF"
 
       - name: Build ISO installer container image
