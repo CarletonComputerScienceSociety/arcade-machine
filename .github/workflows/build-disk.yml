@@ -80,7 +80,7 @@ jobs:
       - name: Build ISO installer container image
         if: matrix.disk-type == 'generic-iso'
         shell: bash
-        run: podman build -t localhost/iso -f Containerfile
+        run: podman build -t localhost/iso -f iso.Containerfile
 
       - name: Run image-builder container
         shell: bash
