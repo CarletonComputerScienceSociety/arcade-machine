@@ -86,6 +86,7 @@ jobs:
         shell: bash
         run: |
           sudo podman run --privileged --rm \
+            --security-opt label=type:unconfined_t \
             -v ./output:/output \
             -v /var/lib/containers/storage:/var/lib/containers/storage \
             "ghcr.io/osbuild/image-builder:latest" \
