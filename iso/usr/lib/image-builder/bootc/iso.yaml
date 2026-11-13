@@ -1,0 +1,7 @@
+label: "ArcadeOS-Installer"
+grub2:
+  timeout: 5
+  entries:
+    - name: "Install ArcadeOS"
+      linux: \${kernelpath} \${root} inst.graphical
+      initrd: \${initrdpath}
