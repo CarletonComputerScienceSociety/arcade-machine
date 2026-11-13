@@ -71,12 +71,14 @@ jobs:
       - name: Create output directory
         shell: bash
         run: mkdir -p output
+
       - name: Pull bootc images
         shell: bash
         run: |
           sudo podman pull "$BOOTC_INSTALLER_PAYLOAD_REF"
 
       - name: Build ISO installer container image
+        if: matrix.disk-type == 'generic-iso'
         shell: bash
         run: podman build -t localhost/iso -f Containerfile
 
