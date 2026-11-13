@@ -33,8 +33,8 @@ jobs:
         include:
           - arch: amd64
             runner: ubuntu-24.04
-          - arch: arm64
-            runner: ubuntu-24.04-arm
+          # - arch: arm64
+          #   runner: ubuntu-24.04-arm
         disk-type: ["qcow2", "generic-iso"]
     runs-on: ${{ matrix.runner }}
     permissions:
