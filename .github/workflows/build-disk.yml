@@ -87,7 +87,7 @@ jobs:
           sudo podman run --privileged --rm \
             -v "${{ github.workspace }}/output:/output" \
             -v /var/lib/containers/storage:/var/lib/containers/storage \
-            "ghcr.io/osbuild/image-builder-cli:latest" \
+            "ghcr.io/osbuild/image-builder:latest" \
             --bootc-ref "${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.DEFAULT_TAG }}" \
             --bootc-installer-payload-ref "${{ env.BIB_IMAGE }}" \
             --bootc-default-fs "btrfs" \
