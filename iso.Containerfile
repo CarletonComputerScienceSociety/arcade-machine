@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 FROM quay.io/fedora/fedora-bootc:44
 
 RUN dnf install -qy \
