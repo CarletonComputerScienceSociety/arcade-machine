@@ -27,17 +27,15 @@ RUN mkdir -p /boot/efi && cp -ra /usr/lib/efi/*/*/EFI /boot/efi
 
 # some configuration for our ISO
 
-RUN mkdir -p /usr/lib/image-builder/bootc
-
-RUN cat <<EOF > /usr/lib/image-builder/bootc/iso.yaml
-label: "Arcade-Installer"
+COPY <<EOT /usr/lib/image-builder/bootc/iso.yaml
+label: "ArcadeOS-Installer"
 grub2:
   timeout: 5
   entries:
-    - name: "Install Fedora (bootc)"
+    - name: "Install ArcadeOS"
       linux: \${kernelpath} \${root} inst.graphical
       initrd: \${initrdpath}
-EOF
+EOT
 
 # some configuration for anaconda
 
