@@ -1,5 +1,3 @@
-# syntax=docker/dockerfile:1
-
 FROM quay.io/fedora/fedora-bootc:44
 
 RUN dnf install -qy \
@@ -29,21 +27,11 @@ RUN mkdir -p /boot/efi && cp -ra /usr/lib/efi/*/*/EFI /boot/efi
 
 # some configuration for our ISO
 
-COPY <<EOT /usr/lib/image-builder/bootc/iso.yaml
-label: "ArcadeOS-Installer"
-grub2:
-  timeout: 5
-  entries:
-    - name: "Install ArcadeOS"
-      linux: \${kernelpath} \${root} inst.graphical
-      initrd: \${initrdpath}
-EOT
+COPY iso/usr/lib/image-builder/bootc/iso.yaml /usr/lib/image-builder/bootc/iso.yaml
 
 # some configuration for anaconda
 
-COPY <<EOT /usr/share/anaconda/interactive-defaults.ks
-bootc --source-imgref containers-storage:ghcr.io/carletoncomputersciencesociety/arcade-machine:latest --target-imgref ghcr.io/carletoncomputersciencesociety/arcade-machine:latest
-EOT
+COPY iso/usr/share/anaconda/interactive-defaults.ks /usr/share/anaconda/interactive-defaults.ks
 
 # ---
 
@@ -62,10 +50,7 @@ RUN mv /usr/share/anaconda/list-harddrives-stub /usr/bin/list-harddrives && \
 RUN ln -sf /usr/lib/systemd/system/anaconda-shell@.service /usr/lib/systemd/system/autovt@.service
 
 RUN mkdir -p /usr/lib/systemd/logind.conf.d
-COPY <<EOT /usr/lib/systemd/logind.conf.d/anaconda-shell.conf
-[Login]
-ReserveVT=2
-EOT
+COPY iso/usr/lib/systemd/logind.conf.d/anaconda-shell.conf /usr/lib/systemd/logind.conf.d/anaconda-shell.conf
 
 RUN mkdir "$(realpath /root)" && \
     kernel=$(kernel-install list --json pretty | jq -r '.[] | select(.has_kernel == true) | .version') && \
@@ -74,13 +59,7 @@ RUN mkdir "$(realpath /root)" && \
         "/usr/lib/modules/${kernel}/initramfs.img" "${kernel}"
 
 RUN mkdir /etc/systemd/user/pipewire.service.d/
-COPY <<EOT /etc/systemd/user/pipewire.service.d/allowroot.conf
-[Unit]
-ConditionUser=
-EOT
+COPY iso/etc/systemd/user/pipewire.service.d/allowroot.conf /etc/systemd/user/pipewire.service.d/allowroot.conf
 
 RUN mkdir /etc/systemd/user/pipewire.socket.d/
-COPY <<EOT /etc/systemd/user/pipewire.socket.d/allowroot.conf
-[Unit]
-ConditionUser=
-EOT
+COPY iso/etc/systemd/user/pipewire.socket.d/allowroot.conf /etc/systemd/user/pipewire.socket.d/allowroot.conf
