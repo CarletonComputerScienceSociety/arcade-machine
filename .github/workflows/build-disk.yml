@@ -94,13 +94,15 @@ jobs:
         run: |
           sudo podman run --privileged --rm \
             --security-opt label=type:unconfined_t \
+            -v ./disk_config:/disk_config:ro \
             -v ./output:/output \
             -v /var/lib/containers/storage:/var/lib/containers/storage \
             "ghcr.io/osbuild/image-builder:latest" \
             --bootc-ref "${{ matrix.disk-type == 'generic-iso' && env.BOOTC_REF || env.BOOTC_INSTALLER_PAYLOAD_REF }}" \
             --bootc-installer-payload-ref "${{ matrix.disk-type == 'generic-iso' && env.BOOTC_INSTALLER_PAYLOAD_REF }}" \
             --bootc-default-fs "btrfs" \
-            build "${{ matrix.disk-type }}"
+            ${{ matrix.disk-type == 'qcow2' && '--config /disk_config/img.toml' }}
+            build -- "${{ matrix.disk-type }}"
 
       - name: Change ownership of output directory
         shell: bash
