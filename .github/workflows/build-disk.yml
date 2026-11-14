@@ -101,7 +101,7 @@ jobs:
             --bootc-ref "${{ matrix.disk-type == 'generic-iso' && env.BOOTC_REF || env.BOOTC_INSTALLER_PAYLOAD_REF }}" \
             --bootc-installer-payload-ref "${{ matrix.disk-type == 'generic-iso' && env.BOOTC_INSTALLER_PAYLOAD_REF }}" \
             --bootc-default-fs "btrfs" \
-            ${{ matrix.disk-type == 'qcow2' && '--blueprint /disk_config/img.toml' }}
+            ${{ matrix.disk-type == 'qcow2' && '--blueprint /disk_config/img.toml' }} \
             build "${{ matrix.disk-type }}"
 
       - name: Change ownership of output directory
