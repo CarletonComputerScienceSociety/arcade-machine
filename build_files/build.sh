@@ -5,6 +5,9 @@ set -ouex pipefail
 # Copy the contents of system_files/ of the git repo to /
 cp -avf "/ctx/system_files"/. /
 
+# Regenerate initramfs (see https://docs.fedoraproject.org/ms/bootc/initramfs/)
+RUN set -xe; kver=$(ls /usr/lib/modules); env DRACUT_NO_XATTR=1 dracut -vf /usr/lib/modules/$kver/initramfs.img "$kver"
+
 ### Install packages
 
 dnf5 install -y alacritty fish greetd helix niri
