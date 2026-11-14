@@ -6,7 +6,7 @@ set -ouex pipefail
 cp -avf "/ctx/system_files"/. /
 
 # Regenerate initramfs (see https://docs.fedoraproject.org/ms/bootc/initramfs/)
-RUN set -xe; kver=$(ls /usr/lib/modules); env DRACUT_NO_XATTR=1 dracut -vf /usr/lib/modules/$kver/initramfs.img "$kver"
+kver=$(ls /usr/lib/modules); env DRACUT_NO_XATTR=1 dracut -vf /usr/lib/modules/$kver/initramfs.img "$kver"
 
 ### Install packages
 
