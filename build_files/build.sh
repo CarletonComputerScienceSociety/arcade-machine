@@ -53,6 +53,12 @@ dnf5 install -y p7zip
 7z x RetroArch.7z -o/opt/RetroArch
 dnf5 remove p7zip
 
+rm RetroArch.7z
+
 mv /opt/RetroArch/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage /opt/RetroArch/RetroArch.AppImage
 mv /opt/RetroArch/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage.home /opt/RetroArch/RetroArch.AppImage.home
 rm -d /opt/RetroArch/RetroArch-Linux-x86_64
+
+### Clean dnf cache
+
+dnf5 clean all
