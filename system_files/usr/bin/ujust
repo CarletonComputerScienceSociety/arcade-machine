@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# SPDX-FileCopyrightText: Copyright 2025 Universal Blue
+#
+# SPDX-License-Identifier: Apache-2.0
+
+/usr/bin/just --justfile /usr/share/arcade/justfile "${@}"
