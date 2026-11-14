@@ -2,32 +2,22 @@
 name: Build disk images
 
 on:
-  workflow_dispatch:
-    inputs:
-      upload-to-s3:
-        description: "Upload to S3"
-        required: false
-        default: false
-        type: boolean
-      platform:
-        required: true
-        type: choice
-        options:
-          - amd64
-          - arm64
   pull_request:
     branches:
       - main
-    paths:
-      - './disk_config/disk.toml'
-      - './disk_config/iso.toml'
-      - './.github/workflows/build-disk.yml'
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**/README.md'
+  workflow_dispatch:
 
 env:
   IMAGE_NAME: ${{ github.event.repository.name }} # output of build.yml, keep in sync
   IMAGE_REGISTRY: "ghcr.io/${{ github.repository_owner }}"  # do not edit
   DEFAULT_TAG: "latest"
-  BIB_IMAGE: "quay.io/centos-bootc/bootc-image-builder:latest"
+  BOOTC_INSTALLER_PAYLOAD_REF: "ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:latest"
+  BOOTC_REF: "localhost/iso"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
@@ -36,11 +26,17 @@ concurrency:
 jobs:
   build:
     name: Build disk images
-    runs-on: ${{ inputs.platform == 'amd64' && 'ubuntu-26.04' || 'ubuntu-26.04-arm' }}
     strategy:
       fail-fast: false
       matrix:
-        disk-type: ["qcow2", "anaconda-iso"]
+        # pinned to 24.04 until https://github.com/osbuild/osbuild/issues/2579 is fixed
+        include:
+          - arch: amd64
+            runner: ubuntu-24.04
+          # - arch: arm64
+          #   runner: ubuntu-24.04-arm
+        disk-type: ["qcow2", "generic-iso"]
+    runs-on: ${{ matrix.runner }}
     permissions:
       contents: read
       packages: read
@@ -55,61 +51,69 @@ jobs:
           DISK_TYPE=$(echo "${{ matrix.disk-type }}" | tr ' ' '-')
           # Lowercase the image uri
           echo "IMAGE_REGISTRY=${IMAGE_REGISTRY,,}" >> ${GITHUB_ENV}
+          echo "BOOTC_INSTALLER_PAYLOAD_REF=${BOOTC_INSTALLER_PAYLOAD_REF,,}" >> ${GITHUB_ENV}
           echo "IMAGE_NAME=${IMAGE_NAME,,}" >> ${GITHUB_ENV}
           echo "DISK_TYPE=${DISK_TYPE}" >> ${GITHUB_ENV}
           echo "USER_UID=${USER_UID}" >> ${GITHUB_ENV}
           echo "USER_GID=${USER_GID}" >> ${GITHUB_ENV}
 
       - name: Install dependencies
-        if: inputs.platform == 'arm64'
+        if: matrix.arch == 'arm64'
         run: |
           set -x
           sudo apt update -y
           sudo apt install -y \
             podman
 
-      - name: Maximize build space
-        if: inputs.platform != 'arm64'
-        uses: ublue-os/remove-unwanted-software@695eb75bc387dbcd9685a8e72d23439d8686cba6
-        with:
-          remove-codeql: true
+      # Fix overlay driver mismatch on ubuntu-24.04 (unknown on ubuntu-26.04)
+      - name: Fix container storage config
+        run: |
+          sudo rm -rf /var/lib/containers/storage
+          sudo mkdir -p /etc/containers
+          echo -e "[storage]\ndriver = \"overlay\"\nrunroot = \"/run/containers/storage\"\ngraphroot = \"/var/lib/containers/storage\"" | sudo tee /etc/containers/storage.conf
 
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
-      - name: Build disk images
-        id: build
-        uses: osbuild/bootc-image-builder-action@028e4d28330efe546229eb9cb52aee78174d2347 # main
-        with:
-          builder-image: ${{ env.BIB_IMAGE }}
-          config-file: ${{ matrix.disk-type == 'anaconda-iso' && './disk_config/iso.toml' || './disk_config/disk.toml' }}
-          image: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.DEFAULT_TAG }}
-          chown: ${{ env.USER_UID }}:${{ env.USER_GID }}
-          types: ${{ matrix.disk-type }}
-          additional-args: --use-librepo=True
+      - name: Create output directory
+        shell: bash
+        run: mkdir -p output
+
+      - name: Pull bootc images
+        shell: bash
+        run: |
+          sudo podman pull "$BOOTC_INSTALLER_PAYLOAD_REF"
+
+      - name: Build ISO installer container image
+        if: matrix.disk-type == 'generic-iso'
+        shell: bash
+        run: sudo podman build -t localhost/iso -f iso.Containerfile
+
+      - name: Run image-builder container
+        shell: bash
+        run: |
+          sudo podman run --privileged --rm \
+            --security-opt label=type:unconfined_t \
+            -v ./disk_config:/disk_config:ro \
+            -v ./output:/output \
+            -v /var/lib/containers/storage:/var/lib/containers/storage \
+            "ghcr.io/osbuild/image-builder:latest" \
+            --bootc-ref "${{ matrix.disk-type == 'generic-iso' && env.BOOTC_REF || env.BOOTC_INSTALLER_PAYLOAD_REF }}" \
+            --bootc-installer-payload-ref "${{ matrix.disk-type == 'generic-iso' && env.BOOTC_INSTALLER_PAYLOAD_REF }}" \
+            --bootc-default-fs "btrfs" \
+            ${{ matrix.disk-type == 'qcow2' && '--blueprint /disk_config/img.toml' || '' }} \
+            build "${{ matrix.disk-type }}"
+
+      - name: Change ownership of output directory
+        shell: bash
+        run: sudo chown -R $(whoami):$(whoami) output
 
       - name: Upload disk images and Checksum to Job Artifacts
-        if: inputs.upload-to-s3 != true && github.event_name != 'pull_request'
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          path: ${{ steps.build.outputs.output-directory }}
+          name: ${{ matrix.disk-type == 'generic-iso' && 'arcade-os-installer.iso' || matrix.disk-type == 'qcow2' && 'arcade-os.qcow2' }}
+          path: output/*
           if-no-files-found: error
           retention-days: 0
           compression-level: 0
-          overwrite: true
-      
-      - name: Upload to S3
-        if: inputs.upload-to-s3 == true && github.event_name != 'pull_request'
-        shell: bash
-        env:
-          RCLONE_CONFIG_S3_TYPE: s3
-          RCLONE_CONFIG_S3_PROVIDER: ${{ secrets.S3_PROVIDER }}
-          RCLONE_CONFIG_S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
-          RCLONE_CONFIG_S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
-          RCLONE_CONFIG_S3_REGION: ${{ secrets.S3_REGION }}
-          RCLONE_CONFIG_S3_ENDPOINT: ${{ secrets.S3_ENDPOINT }}
-          SOURCE_DIR: ${{ steps.build.outputs.output-directory }}
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y rclone
-          rclone copy $SOURCE_DIR S3:${{ secrets.S3_BUCKET_NAME }}
+          archive: false
