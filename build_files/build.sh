@@ -5,6 +5,10 @@ set -ouex pipefail
 # Copy the contents of system_files/ of the git repo to /
 cp -avf "/ctx/system_files"/. /
 
+# Fix permissions on SSH authorized keys files
+chmod 755 /etc/ssh/authorized_keys
+chmod 644 /etc/ssh/authorized_keys/root
+
 # Regenerate initramfs (see https://docs.fedoraproject.org/ms/bootc/initramfs/)
 kver=$(ls /usr/lib/modules); env DRACUT_NO_XATTR=1 dracut -vf /usr/lib/modules/$kver/initramfs.img "$kver"
 
@@ -24,6 +28,10 @@ dnf5 install -y alacritty fish greetd helix niri
 # fedora-bootc base image does not come with ModemManager?
 # systemctl disable ModemManager.service avahi-daemon.service avahi-daemon.socket
 systemctl disable avahi-daemon.service avahi-daemon.socket
+
+### Enable SSH
+
+systemctl enable sshd.service
 
 ### Configure greeter
 
