@@ -2,6 +2,10 @@
 
 set -ouex pipefail
 
+# Remove symlink to /var/home
+# We can link anything that should be mutable manually
+rm /home
+
 # Copy the contents of system_files/ of the git repo to /
 cp -avf "/ctx/system_files"/. /
 
@@ -43,7 +47,7 @@ useradd --home-dir / --no-create-home --system --shell /bin/nologin greeter
 
 ### Create the arcade user
 
-useradd --create-home --shell /usr/bin/fish arcade
+useradd --no-create-home --shell /usr/bin/fish arcade
 
 ### Install RetroArch
 
