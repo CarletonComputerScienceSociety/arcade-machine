@@ -1,0 +1,17 @@
+#!/usr/bin/env python3
+
+import os
+from pathlib import Path
+from string import Template
+
+TMPL_PREFIX = os.getenv("RA_TMPL_PREFIX", "")
+
+KIOSK = os.environ["RA_KIOSK"]
+
+# Define the template
+tpl = Template(Path(f"{TMPL_PREFIX}/usr/share/arcade/RetroArch/retroarch.cfg.tmpl").read_text(encoding="utf-8"))
+
+# Substitute values
+result = tpl.substitute(kiosk=KIOSK)
+# write to live path
+print(result)
