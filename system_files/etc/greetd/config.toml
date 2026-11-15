@@ -1,5 +1,6 @@
 [terminal]
-vt = 1
+# use VT 2 to avoid journal spam on VT 1
+vt = 2
 
 [default_session]
 command = "agreety --cmd niri-session"
