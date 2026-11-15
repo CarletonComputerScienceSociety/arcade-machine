@@ -2,6 +2,8 @@
 
 set -ouex pipefail
 
+DNF_INSTALL="dnf5 install -y --nodocs --setopt install_weak_deps=False"
+
 # Remove symlink to /var/home
 # We can link anything that should be mutable manually
 rm /home
@@ -18,7 +20,7 @@ kver=$(ls /usr/lib/modules); env DRACUT_NO_XATTR=1 dracut -vf /usr/lib/modules/$
 
 ### Install packages
 
-dnf5 install -y alacritty fish greetd helix niri
+$DNF_INSTALL alacritty fish greetd helix niri
 
 # Use a COPR Example:
 #
@@ -53,7 +55,7 @@ useradd --no-create-home --shell /usr/bin/fish arcade
 
 curl -O https://buildbot.libretro.com/nightly/linux/x86_64/RetroArch.7z
 
-dnf5 install -y 7zip-standalone
+$DNF_INSTALL 7zip-standalone
 7z x RetroArch.7z -o/opt/RetroArch
 dnf5 remove -y 7zip-standalone
 
@@ -62,6 +64,10 @@ rm RetroArch.7z
 mv /opt/RetroArch/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage /opt/RetroArch/RetroArch.AppImage
 mv /opt/RetroArch/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage.home /opt/RetroArch/RetroArch.AppImage.home
 rm -d /opt/RetroArch/RetroArch-Linux-x86_64
+
+### Print leaf packages
+
+dnf5 leaves
 
 ### Clean dnf cache
 
