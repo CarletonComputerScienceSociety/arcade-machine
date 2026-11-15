@@ -18,6 +18,24 @@ chmod 644 /etc/ssh/authorized_keys/root
 # Regenerate initramfs (see https://docs.fedoraproject.org/ms/bootc/initramfs/)
 kver=$(ls /usr/lib/modules); env DRACUT_NO_XATTR=1 dracut -vf /usr/lib/modules/$kver/initramfs.img "$kver"
 
+### Prune packages
+
+dnf remove -y \
+  NetworkManager-cloud-setup \
+  NetworkManager-tui \
+  WALinuxAgent-udev \
+  openssh-clients \
+  socat \
+  sssd-ad \
+  sssd-ipa \
+  sssd-krb5 \
+  sssd-ldap \
+  toolbox \
+  vim-minimal \
+  zram-generator
+
+dnf remove -y --setopt protected_packages= sudo sudo-python-plugin
+
 ### Install packages
 
 $DNF_INSTALL alacritty fish greetd helix niri
