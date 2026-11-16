@@ -9,7 +9,9 @@ Type=oneshot
 RemainAfterExit=yes
 ExecStartPre=/bin/mkdir -p /run/overlay/arcade-home
 ExecStartPre=/bin/mount -t tmpfs -o size=1G tmpfs ExecStartPre=/bin/mkdir -p /run/overlay/arcade-home
-ExecStart=/bin/mkdir -p /run/overlay/arcade-home/upper /run/overlay/arcade-home/work
+ExecStartPre=/bin/mkdir -p /run/overlay/arcade-home/upper /run/overlay/arcade-home/work
+ExecStartPre=/bin/chown arcade: /run/overlay/arcade-home/upper
+ExecStart=/bin/chmod 750 /run/overlay/arcade-home/upper
 
 [Install]
 WantedBy=local-fs.target
