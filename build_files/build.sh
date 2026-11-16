@@ -128,4 +128,4 @@ dnf5 clean all
 
 ### Remove dnf itself now that we're done with it
 
-dnf5 remove -y dnf5
+dnf5 remove -y --setopt protected_packages= dnf5
