@@ -25,15 +25,33 @@ dnf remove -y \
   NetworkManager-cloud-setup \
   NetworkManager-tui \
   WALinuxAgent-udev \
+  llvm-libs \
   nvidia-gpu-firmware \
   openssh-clients \
   qemu-user-static \
+  qemu-user-static-alpha \
+  qemu-user-static-hexagon \
+  qemu-user-static-hppa \
+  qemu-user-static-loongarch64 \
+  qemu-user-static-m68k \
+  qemu-user-static-microblaze \
+  qemu-user-static-mips \
+  qemu-user-static-or1k \
+  qemu-user-static-ppc \
+  qemu-user-static-riscv \
+  qemu-user-static-s390x \
+  qemu-user-static-sh4 \
+  qemu-user-static-sparc \
+  qemu-user-static-xtensa \
   socat \
   sssd-ad \
+  sssd-common-pac \
   sssd-ipa \
   sssd-krb5 \
+  sssd-krb5-common \
   sssd-ldap \
   toolbox \
+  vim-data \
   vim-minimal \
   zram-generator
 
