@@ -61,7 +61,7 @@ dnf remove -y --setopt protected_packages= sudo sudo-python-plugin
 
 ### Install packages
 
-$DNF_INSTALL alacritty fish greetd helix niri
+$DNF_INSTALL alacritty fish greetd helix niri waybar
 
 # Use a COPR Example:
 #
