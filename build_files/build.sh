@@ -2,7 +2,7 @@
 
 set -ouex pipefail
 
-DNF_INSTALL="dnf5 install -y --nodocs --setopt install_weak_deps=False"
+DNF_INSTALL="dnf5 install -y --nodocs --setopt install_weak_deps=0"
 
 # Remove symlink to /var/home
 # We can link anything that should be mutable manually
@@ -20,11 +20,14 @@ kver=$(ls /usr/lib/modules); env DRACUT_NO_XATTR=1 dracut -vf /usr/lib/modules/$
 
 ### Prune packages
 
+# The qemu exclusion here can be removed in the future if there is a use for it. Without a use, it is simply bloat.
 dnf remove -y \
   NetworkManager-cloud-setup \
   NetworkManager-tui \
   WALinuxAgent-udev \
+  nvidia-gpu-firmware \
   openssh-clients \
+  qemu-user-static \
   socat \
   sssd-ad \
   sssd-ipa \
