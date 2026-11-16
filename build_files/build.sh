@@ -27,9 +27,15 @@ dnf remove -y \
   NetworkManager-cloud-setup \
   NetworkManager-tui \
   WALinuxAgent-udev \
+  libipa_hbac \
+  libsmbclient \
   llvm-libs \
+  nfs-utils \
+  nss-altfiles \
   nvidia-gpu-firmware \
   openssh-clients \
+  p11-kit-server \
+  python3-libdnf5 \
   qemu-user-static \
   qemu-user-static-alpha \
   qemu-user-static-hexagon \
@@ -45,8 +51,10 @@ dnf remove -y \
   qemu-user-static-sh4 \
   qemu-user-static-sparc \
   qemu-user-static-xtensa \
+  sg3_utils \
   socat \
   sssd-ad \
+  sssd-common \
   sssd-common-pac \
   sssd-ipa \
   sssd-krb5 \
@@ -117,3 +125,7 @@ dnf5 leaves
 ### Clean dnf cache
 
 dnf5 clean all
+
+### Remove dnf itself now that we're done with it
+
+dnf5 remove -y dnf5
