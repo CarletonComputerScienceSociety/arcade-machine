@@ -1,0 +1,13 @@
+[Unit]
+Description=Volatile /home/arcade
+After=home-arcade-overlayfs-dirs.service
+Requires=home-arcade-overlayfs-dirs.service
+
+[Mount]
+What=overlay
+Where=/home/arcade
+Type=overlay
+Options=lowerdir=/usr/lib/arcade/home,upperdir=/run/overlay/arcade-home/upper,workdir=/run/overlay/arcade-home/work
+
+[Install]
+WantedBy=local-fs.target   
