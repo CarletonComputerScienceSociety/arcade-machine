@@ -7,7 +7,7 @@ Requires=home-arcade-overlayfs-dirs.service
 What=overlay
 Where=/home/arcade
 Type=overlay
-Options=lowerdir=/usr/lib/arcade/home,upperdir=/run/overlay/arcade-home/upper,workdir=/run/overlay/arcade-home/work
+Options=lowerdir=/usr/share/arcade/home,upperdir=/run/overlay/arcade-home/upper,workdir=/run/overlay/arcade-home/work
 
 [Install]
 WantedBy=local-fs.target   
