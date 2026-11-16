@@ -8,4 +8,4 @@ user = "greeter"
 
 [initial_session]
 command = "fish"
-user = "root"
+user = "arcade"
