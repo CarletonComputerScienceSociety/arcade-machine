@@ -8,6 +8,8 @@ DNF_INSTALL="dnf5 install -y --nodocs --setopt install_weak_deps=0"
 # We can link anything that should be mutable manually
 rm /home
 
+mkdir /home
+
 # Copy the contents of system_files/ of the git repo to /
 cp -avf "/ctx/system_files"/. /
 
@@ -89,6 +91,10 @@ useradd --home-dir / --no-create-home --system --shell /bin/nologin greeter
 ### Create the arcade user
 
 useradd --no-create-home --shell /usr/bin/fish arcade
+
+mkdir /home/arcade
+chown arcade: /home/arcade
+chmod o-rwx /home/arcade
 
 ### Install RetroArch
 
