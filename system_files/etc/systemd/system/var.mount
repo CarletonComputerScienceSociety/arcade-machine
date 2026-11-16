@@ -1,0 +1,11 @@
+# ostree's persistent var.mount wins over systemd's volatile var.mount
+# This file wins over both
+
+[Unit]
+Description=Volatile /var
+
+[Mount]
+What=tmpfs
+Where=/var
+Type=tmpfs
+Options=mode=0755,size=25%%,nr_inodes=1m
