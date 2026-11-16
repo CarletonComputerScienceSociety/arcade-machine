@@ -109,18 +109,22 @@ chmod o-rwx /home/arcade
 curl -O https://buildbot.libretro.com/nightly/linux/x86_64/RetroArch.7z
 
 $DNF_INSTALL 7zip-standalone
-7z x RetroArch.7z -o/opt/RetroArch
+7z x RetroArch.7z -o/tmp/RetroArch
 dnf5 remove -y 7zip-standalone
 
 rm RetroArch.7z
 
-mv /opt/RetroArch/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage /opt/RetroArch/RetroArch.AppImage
-mv /opt/RetroArch/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage.home /opt/RetroArch/RetroArch.AppImage.home
-rm -d /opt/RetroArch/RetroArch-Linux-x86_64
+mv /tmp/RetroArch/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage /usr/share/arcade/RetroArch/RetroArch.AppImage
+mv /tmp/RetroArch/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage.home /usr/share/arcade/RetroArch/RetroArch.AppImage.home
+rm -d /tmp/RetroArch/RetroArch-Linux-x86_64 /tmp/RetroArch
 
-### Print leaf packages
+### Print leaf packages and package sizes
 
+echo '=== leaf packages ==='
 dnf5 leaves
+
+echo '=== packages by size ==='
+dnf repoquery -C --installed --qf "%{installsize} %{name}\n" | sort -n | numfmt --to=iec --format="%.2f"   
 
 ### Clean dnf cache
 
