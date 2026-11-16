@@ -90,7 +90,7 @@ useradd --home-dir / --no-create-home --system --shell /bin/nologin greeter
 
 ### Create the arcade user
 
-useradd --no-create-home --shell /usr/bin/fish arcade
+useradd --home-dir /home/arcade --no-create-home --shell /usr/bin/fish arcade
 
 mkdir /home/arcade
 chown arcade: /home/arcade
