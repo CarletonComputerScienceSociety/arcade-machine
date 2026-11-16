@@ -4,3 +4,6 @@ label = "root"
 mountpoint = "/"
 fs_type = "xfs"
 minsize = "16 GiB"
+
+[customizations.kernel]
+append = "console=tty1"
