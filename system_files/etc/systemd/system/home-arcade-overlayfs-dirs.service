@@ -1,0 +1,15 @@
+[Unit]
+Description=Prepare directories for /home/arcade OverlayFS
+DefaultDependencies=no
+Conflicts=umount.target
+Before=local-fs.target overlay.mount
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStartPre=/bin/mkdir -p /run/overlay/arcade-home
+ExecStartPre=/bin/mount -t tmpfs -o size=1G tmpfs ExecStartPre=/bin/mkdir -p /run/overlay/arcade-home
+ExecStart=/bin/mkdir -p /run/overlay/arcade-home/upper /run/overlay/arcade-home/work
+
+[Install]
+WantedBy=local-fs.target
