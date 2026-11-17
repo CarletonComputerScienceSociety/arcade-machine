@@ -138,6 +138,9 @@ dnf5 remove -y \
   volume_key-libs \
   zram-generator
 
+# TODO: fix above and remove this
+$DNF_INSTALL niri waybar
+
 dnf5 remove -y --setopt protected_packages= sudo sudo-python-plugin
 
 ### Regenerate initramfs (see https://docs.fedoraproject.org/ms/bootc/initramfs/)
