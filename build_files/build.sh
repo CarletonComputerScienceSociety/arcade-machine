@@ -76,9 +76,6 @@ dnf5 remove -y \
   brcmfmac-firmware \
   cracklib-dicts \
   fwupd-plugin-modem-manager \
-  glycin-libs \
-  glycin-loaders \
-  gtk3 \
   intel-npu-firmware \
   libblockdev-crypto \
   libdnf5-plugin-expired-pgp-keys \
