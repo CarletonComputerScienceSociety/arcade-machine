@@ -19,7 +19,7 @@ chmod 644 /etc/ssh/authorized_keys/root
 
 ### Install packages
 
-$DNF_INSTALL alacritty fish greetd helix niri waybar
+$DNF_INSTALL $(cat /etc/dnf/protected.d/arcade-packages.conf)
 
 # Use a COPR Example:
 #
@@ -27,10 +27,6 @@ $DNF_INSTALL alacritty fish greetd helix niri waybar
 # dnf5 -y install package
 # Disable COPRs so they don't end up enabled on the final image:
 # dnf5 -y copr disable ublue-os/staging
-
-### Prune services
-
-systemctl disable avahi-daemon.service avahi-daemon.socket
 
 ### Enable SSH
 
