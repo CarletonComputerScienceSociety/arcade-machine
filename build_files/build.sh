@@ -33,8 +33,6 @@ $DNF_INSTALL alacritty fish greetd helix niri waybar
 
 ### Prune services
 
-# fedora-bootc base image does not come with ModemManager?
-# systemctl disable ModemManager.service avahi-daemon.service avahi-daemon.socket
 systemctl disable avahi-daemon.service avahi-daemon.socket
 
 ### Enable SSH
@@ -75,10 +73,13 @@ rm -d /tmp/RetroArch/RetroArch-Linux-x86_64 /tmp/RetroArch
 
 # The qemu entries here can be removed in the future if there is a use for it. Without a use, it is simply bloat.
 dnf5 remove -y \
+  ModemManager-glib \
   NetworkManager-cloud-setup \
   NetworkManager-tui \
   WALinuxAgent-udev \
   atheros-firmware \
+  avahi \
+  brcmfmac-firmware \
   cracklib-dicts \
   glycin-loaders \
   gtk3 \
@@ -89,8 +90,11 @@ dnf5 remove -y \
   mt7xxx-firmware \
   nfs-client-utils \
   nfs-utils \
+  nss \
   nss-altfiles \
+  nss-softokn \
   nvidia-gpu-firmware \
+  nxpwireless-firmware \
   openssh-clients \
   p11-kit-server \
   python3-botocore \
@@ -110,7 +114,9 @@ dnf5 remove -y \
   qemu-user-static-sh4 \
   qemu-user-static-sparc \
   qemu-user-static-xtensa \
+  realtek-firmware \
   samba-client-libs \
+  samba-ndr-libs \
   sg3_utils \
   socat \
   sssd-ad \
@@ -122,6 +128,7 @@ dnf5 remove -y \
   sssd-krb5-common \
   sssd-ldap \
   sssd-nfs-idmap \
+  tiwilink-firmware \
   toolbox \
   vim-data \
   vim-minimal \
@@ -143,4 +150,4 @@ dnf5 clean all
 
 ### Remove dnf itself now that we're done with it
 
-dnf5 remove -y --setopt protected_packages= dnf5
+dnf5 remove -y --setopt protected_packages= dnf5 libdnf5
