@@ -3,6 +3,10 @@ name: Build disk images
 
 on:
   workflow_dispatch:
+    inputs:
+      previous-run-id:
+        type: string
+        description: "The previous run ID to reference when producing a delta file"
   workflow_run:
     workflows: [Build container image]
     # TODO: build disk images for other branches from their container images
@@ -114,4 +118,24 @@ jobs:
           if-no-files-found: error
           retention-days: 0
           compression-level: 0
+          archive: false
+
+  produce_deltas:
+    name: "Produce image deltas"
+    needs: build
+    runs-on: ubuntu-26.04-arm
+    permissions:
+      actions: read
+    steps:
+      - id: ina
+        uses: mpfaff/ina-delta-action@v1
+        with:
+          artifact-pattern: bootc-fedora-44-qcow2-x86_64\.qcow2
+          new-run-id: ${{ github.run_id }}
+          previous-run-id: ${{ inputs.previous-run-id }}
+
+      - if: steps.ina.outputs.delta-path
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          path: ${{ steps.ina.outputs.delta-path }}
           archive: false
