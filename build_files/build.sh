@@ -79,6 +79,7 @@ dnf5 remove -y \
   cracklib-dicts \
   glycin-loaders \
   gtk3 \
+  intel-npu-firmware \
   libdnf5-plugin-expired-pgp-keys \
   libipa_hbac \
   libsmbclient \
@@ -89,12 +90,14 @@ dnf5 remove -y \
   nss \
   nss-altfiles \
   nss-softokn \
+  nss-softokn-freebl \
   nvidia-gpu-firmware \
   nxpwireless-firmware \
   openssh-clients \
   p11-kit-server \
   python3-botocore \
   python3-libdnf5 \
+  qcom-wwan-firmware \
   qemu-user-static \
   qemu-user-static-alpha \
   qemu-user-static-hexagon \
