@@ -4,7 +4,7 @@ vt = 2
 
 [default_session]
 command = "agreety --cmd niri-session"
-user = "greeter"
+user = "greetd"
 
 [initial_session]
 command = "fish"
