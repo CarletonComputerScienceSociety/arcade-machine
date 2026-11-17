@@ -20,53 +20,6 @@ chmod 644 /etc/ssh/authorized_keys/root
 # Regenerate initramfs (see https://docs.fedoraproject.org/ms/bootc/initramfs/)
 kver=$(ls /usr/lib/modules); env DRACUT_NO_XATTR=1 dracut -vf /usr/lib/modules/$kver/initramfs.img "$kver"
 
-### Prune packages
-
-# The qemu exclusion here can be removed in the future if there is a use for it. Without a use, it is simply bloat.
-dnf remove -y \
-  NetworkManager-cloud-setup \
-  NetworkManager-tui \
-  WALinuxAgent-udev \
-  libipa_hbac \
-  libsmbclient \
-  llvm-libs \
-  nfs-utils \
-  nss-altfiles \
-  nvidia-gpu-firmware \
-  openssh-clients \
-  p11-kit-server \
-  python3-libdnf5 \
-  qemu-user-static \
-  qemu-user-static-alpha \
-  qemu-user-static-hexagon \
-  qemu-user-static-hppa \
-  qemu-user-static-loongarch64 \
-  qemu-user-static-m68k \
-  qemu-user-static-microblaze \
-  qemu-user-static-mips \
-  qemu-user-static-or1k \
-  qemu-user-static-ppc \
-  qemu-user-static-riscv \
-  qemu-user-static-s390x \
-  qemu-user-static-sh4 \
-  qemu-user-static-sparc \
-  qemu-user-static-xtensa \
-  sg3_utils \
-  socat \
-  sssd-ad \
-  sssd-common \
-  sssd-common-pac \
-  sssd-ipa \
-  sssd-krb5 \
-  sssd-krb5-common \
-  sssd-ldap \
-  toolbox \
-  vim-data \
-  vim-minimal \
-  zram-generator
-
-dnf remove -y --setopt protected_packages= sudo sudo-python-plugin
-
 ### Install packages
 
 $DNF_INSTALL alacritty fish greetd helix niri waybar
@@ -108,15 +61,73 @@ chmod o-rwx /home/arcade
 
 curl -O https://buildbot.libretro.com/nightly/linux/x86_64/RetroArch.7z
 
-$DNF_INSTALL 7zip-standalone
+$DNF_INSTALL 7zip
 7z x RetroArch.7z -o/tmp/RetroArch
-dnf5 remove -y 7zip-standalone
+dnf5 remove -y 7zip
 
 rm RetroArch.7z
 
 mv /tmp/RetroArch/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage /usr/share/arcade/RetroArch/RetroArch.AppImage
 mv /tmp/RetroArch/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage.home /usr/share/arcade/RetroArch/RetroArch.AppImage.home
 rm -d /tmp/RetroArch/RetroArch-Linux-x86_64 /tmp/RetroArch
+
+### Prune packages
+
+# The qemu entries here can be removed in the future if there is a use for it. Without a use, it is simply bloat.
+dnf5 remove -y \
+  NetworkManager-cloud-setup \
+  NetworkManager-tui \
+  WALinuxAgent-udev \
+  atheros-firmware \
+  cracklib-dicts \
+  glycin-loaders \
+  gtk3 \
+  libdnf5-plugin-expired-pgp-keys \
+  libipa_hbac \
+  libsmbclient \
+  llvm-libs \
+  mt7xxx-firmware \
+  nfs-client-utils \
+  nfs-utils \
+  nss-altfiles \
+  nvidia-gpu-firmware \
+  openssh-clients \
+  p11-kit-server \
+  python3-botocore \
+  python3-libdnf5 \
+  qemu-user-static \
+  qemu-user-static-alpha \
+  qemu-user-static-hexagon \
+  qemu-user-static-hppa \
+  qemu-user-static-loongarch64 \
+  qemu-user-static-m68k \
+  qemu-user-static-microblaze \
+  qemu-user-static-mips \
+  qemu-user-static-or1k \
+  qemu-user-static-ppc \
+  qemu-user-static-riscv \
+  qemu-user-static-s390x \
+  qemu-user-static-sh4 \
+  qemu-user-static-sparc \
+  qemu-user-static-xtensa \
+  samba-client-libs \
+  sg3_utils \
+  socat \
+  sssd-ad \
+  sssd-client \
+  sssd-common \
+  sssd-common-pac \
+  sssd-ipa \
+  sssd-krb5 \
+  sssd-krb5-common \
+  sssd-ldap \
+  sssd-nfs-idmap \
+  toolbox \
+  vim-data \
+  vim-minimal \
+  zram-generator
+
+dnf5 remove -y --setopt protected_packages= sudo sudo-python-plugin
 
 ### Print leaf packages and package sizes
 
