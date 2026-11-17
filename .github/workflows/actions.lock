@@ -6,7 +6,7 @@ workflows:
     '.github/workflows/build-disk.yml':
         - 'actions/checkout@v7.0.1'
         - 'actions/upload-artifact@v7.0.2'
-        - 'mpfaff/ina-delta-action@v1'
+        - 'mpfaff/ina-delta-action@v1.0.1'
     '.github/workflows/build.yml':
         - 'actions/checkout@v7.0.1'
         - 'docker/login-action@v4.8.0'
@@ -40,9 +40,9 @@ dependencies:
         repo_id: 258510356
         uses:
             - 'extractions/setup-crate@0551596312d4008a6dfbc4d3c38fa20eaef46d2d'
-    'mpfaff/ina-delta-action@v1':
-        ref: 'v1'
-        commit: 'sha1-8d6559eb2b92c7d816e6372b7a14c78519f318a6'
+    'mpfaff/ina-delta-action@v1.0.1':
+        ref: 'v1.0.1'
+        commit: 'sha1-f352bd105c01968d7ed0747c2d9f1c479f848939'
         owner_id: 23013931
         repo_id: 1460852958
     'sigstore/cosign-installer@v4.1.3':
