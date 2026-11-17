@@ -88,13 +88,9 @@ systemctl disable avahi-daemon.service avahi-daemon.socket
 
 systemctl enable sshd.service
 
-### Configure greeter
+### Enable greetd
 
-# enable if switching to fedora-silverblue base image
-# systemctl disable gdm.service
 systemctl enable greetd.service
-
-useradd --home-dir / --no-create-home --system --shell /bin/nologin greeter
 
 ### Create the arcade user
 
