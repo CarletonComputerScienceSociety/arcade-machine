@@ -128,7 +128,7 @@ jobs:
       actions: read
     steps:
       - id: ina
-        uses: mpfaff/ina-delta-action@v1.0.1
+        uses: mpfaff/ina-delta-action@v2.0.0
         with:
           artifact-pattern: bootc-fedora-44-qcow2-x86_64\.qcow2
           new-run-id: ${{ github.run_id }}
