@@ -65,6 +65,7 @@ rm -d /tmp/RetroArch/RetroArch-Linux-x86_64 /tmp/RetroArch
 ### Prune packages
 
 # The qemu entries here can be removed in the future if there is a use for it. Without a use, it is simply bloat.
+# llvm-libs is unfortunately required by mesa-dri-drivers
 dnf5 remove -y \
   ModemManager-glib \
   NetworkManager-cloud-setup \
@@ -74,26 +75,31 @@ dnf5 remove -y \
   avahi \
   brcmfmac-firmware \
   cracklib-dicts \
+  fwupd-plugin-modem-manager \
+  glycin-libs \
   glycin-loaders \
   gtk3 \
   intel-npu-firmware \
+  libblockdev-crypto \
   libdnf5-plugin-expired-pgp-keys \
   libipa_hbac \
   libsmbclient \
-  llvm-libs \
   mt7xxx-firmware \
   nfs-client-utils \
   nfs-utils \
   nss \
   nss-altfiles \
   nss-softokn \
+  nss-sysinit \
   nss-softokn-freebl \
   nvidia-gpu-firmware \
   nxpwireless-firmware \
   openssh-clients \
   p11-kit-server \
+  python3-boto3 \
   python3-botocore \
   python3-libdnf5 \
+  python3-s3transfer \
   qcom-wwan-firmware \
   qemu-user-static \
   qemu-user-static-alpha \
@@ -126,8 +132,10 @@ dnf5 remove -y \
   sssd-nfs-idmap \
   tiwilink-firmware \
   toolbox \
+  udisks2 \
   vim-data \
   vim-minimal \
+  volume_key-libs \
   zram-generator
 
 dnf5 remove -y --setopt protected_packages= sudo sudo-python-plugin
