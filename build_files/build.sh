@@ -16,6 +16,7 @@ cp -avf "/ctx/system_files"/. /
 # Fix permissions on SSH authorized keys files
 chmod 755 /etc/ssh/authorized_keys
 chmod 644 /etc/ssh/authorized_keys/root
+
 ### Install packages
 
 $DNF_INSTALL alacritty fish greetd helix niri waybar
