@@ -2,6 +2,7 @@
 Description=Volatile /home/arcade
 After=home-arcade-overlayfs-dirs.service
 Requires=home-arcade-overlayfs-dirs.service
+Before=display-manager.target
 
 [Mount]
 What=overlay
