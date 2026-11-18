@@ -1,5 +1,7 @@
 FROM quay.io/fedora/fedora-bootc:45
 
+### Install dependencies
+
 RUN dnf install -qy \
     anaconda \
     anaconda-install-img-deps \
@@ -23,17 +25,11 @@ RUN dnf clean all
 
 RUN mkdir -p /boot/efi && cp -ra /usr/lib/efi/*/*/EFI /boot/efi
 
-# ---
+### Copy in our files
 
-# some configuration for our ISO
+COPY iso/ /
 
-COPY iso/usr/lib/image-builder/bootc/iso.yaml /usr/lib/image-builder/bootc/iso.yaml
-
-# some configuration for anaconda
-
-COPY iso/usr/share/anaconda/interactive-defaults.ks /usr/share/anaconda/interactive-defaults.ks
-
-# ---
+### Setup anaconda
 
 # these things are normally performed by `lorax` to make `anaconda` work; this is the
 # bare minimum to get things to work
