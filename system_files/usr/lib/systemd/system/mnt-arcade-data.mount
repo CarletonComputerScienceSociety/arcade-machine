@@ -1,0 +1,15 @@
+[Unit]
+Description=/mnt/arcade-data
+DefaultDependencies=no
+Requires=local-fs.target
+After=local-fs.target
+Before=display-manager.target
+
+[Mount]
+What=/dev/disk/by-label/ARCADEDATA
+Where=/mnt/arcade-data
+Type=auto
+Options=defaults,nosuid,nodev
+
+[Install]
+WantedBy=multi-user.target
