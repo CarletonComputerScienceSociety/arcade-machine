@@ -55,8 +55,10 @@ dnf5 remove -y 7zip
 rm RetroArch.7z
 
 mv /tmp/RetroArch/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage /usr/share/arcade/RetroArch/RetroArch.AppImage
-mv /tmp/RetroArch/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage.home /usr/share/arcade/RetroArch/RetroArch.AppImage.home
-rm -d /tmp/RetroArch/RetroArch-Linux-x86_64 /tmp/RetroArch
+rm -d \
+  /tmp/RetroArch/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage.home \
+  /tmp/RetroArch/RetroArch-Linux-x86_64 \
+  /tmp/RetroArch
 
 ### Prune packages
 
