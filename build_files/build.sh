@@ -67,10 +67,13 @@ dnf5 remove -y \
   NetworkManager-cloud-setup \
   NetworkManager-tui \
   WALinuxAgent-udev \
+  adcli \
   atheros-firmware \
   avahi \
   brcmfmac-firmware \
+  cloud-utils-growpart \
   cracklib-dicts \
+  flatpak \
   fwupd-plugin-modem-manager \
   intel-npu-firmware \
   libblockdev-crypto \
