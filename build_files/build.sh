@@ -13,10 +13,6 @@ mkdir /home
 # Copy the contents of system_files/ of the git repo to /
 cp -avf "/ctx/system_files"/. /
 
-# Fix permissions on SSH authorized keys files
-chmod 755 /etc/ssh/authorized_keys
-chmod 644 /etc/ssh/authorized_keys/root
-
 ### Install packages
 
 $DNF_INSTALL $(cat /etc/dnf/protected.d/arcade-packages.conf)
@@ -30,11 +26,19 @@ $DNF_INSTALL $(cat /etc/dnf/protected.d/arcade-packages.conf)
 
 ### Enable SSH
 
+# Fix permissions on SSH authorized keys files
+chmod 755 /etc/ssh/authorized_keys
+chmod 644 /etc/ssh/authorized_keys/root
+
 systemctl enable sshd.service
 
 ### Enable greetd
 
 systemctl enable greetd.service
+
+### Configure the root user
+
+chsh -s /usr/bin/fish
 
 ### Create the arcade user
 
