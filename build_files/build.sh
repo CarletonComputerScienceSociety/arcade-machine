@@ -44,6 +44,9 @@ mkdir /home/arcade
 chown arcade: /home/arcade
 chmod o-rwx /home/arcade
 
+chown -R arcade: /usr/share/arcade/home
+chmod -R o-rwx /usr/share/arcade/home
+
 ### Install RetroArch
 
 curl -O https://buildbot.libretro.com/nightly/linux/x86_64/RetroArch.7z
@@ -54,9 +57,15 @@ dnf5 remove -y 7zip
 
 rm RetroArch.7z
 
-mv /tmp/RetroArch/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage /usr/share/arcade/RetroArch/RetroArch.AppImage
-mv /tmp/RetroArch/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage.home /usr/share/arcade/RetroArch/RetroArch.AppImage.home
-rm -d /tmp/RetroArch/RetroArch-Linux-x86_64 /tmp/RetroArch
+mv /tmp/RetroArch/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage /usr/share/arcade/RetroArch.AppImage
+mv /tmp/RetroArch/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage.home/.config/retroarch /usr/share/arcade/home/.config/retroarch
+rm -d \
+  /tmp/RetroArch/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage.home/.config \
+  /tmp/RetroArch/RetroArch-Linux-x86_64/RetroArch-Linux-x86_64.AppImage.home \
+  /tmp/RetroArch/RetroArch-Linux-x86_64 \
+  /tmp/RetroArch
+
+touch /usr/share/arcade/home/.config/retroarch/retroarch.cfg.overlay
 
 ### Prune packages
 

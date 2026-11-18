@@ -1,2 +1,10 @@
 help:
   @just --list
+
+enable-kiosk-mode:
+    RA_KIOSK="true" arcade-render-retroarch-config ~/.config/retroarch/retroarch.cfg.overlay
+    systemctl --user restart arcade-home.service
+
+disable-kiosk-mode:
+    RA_KIOSK="false" arcade-render-retroarch-config ~/.config/retroarch/retroarch.cfg.overlay
+    systemctl --user restart arcade-home.service
