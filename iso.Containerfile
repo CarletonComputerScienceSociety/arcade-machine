@@ -54,8 +54,8 @@ RUN mkdir "$(realpath /root)" && \
         --add "anaconda" \
         "/usr/lib/modules/${kernel}/initramfs.img" "${kernel}"
 
-RUN mkdir /etc/systemd/user/pipewire.service.d/
+RUN mkdir -p /etc/systemd/user/pipewire.service.d/ && ls -al /etc/systemd/user/pipewire.service.d/
 COPY iso/etc/systemd/user/pipewire.service.d/allowroot.conf /etc/systemd/user/pipewire.service.d/allowroot.conf
 
-RUN mkdir /etc/systemd/user/pipewire.socket.d/
+RUN mkdir -p /etc/systemd/user/pipewire.socket.d/ && ls -al /etc/systemd/user/pipewire.socket.d/
 COPY iso/etc/systemd/user/pipewire.socket.d/allowroot.conf /etc/systemd/user/pipewire.socket.d/allowroot.conf
